@@ -9,7 +9,7 @@ int* f() {
 
 int main() {
 	int* x = f();
-	printf("x mem address: %p\nx value: %d\n", &x, *x);
+	printf("x mem address: %p\nx value: %d\n", x, *x);
 	free(x);
 	return 0;
 }
