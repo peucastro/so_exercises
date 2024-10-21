@@ -31,5 +31,6 @@ int main(int argc, char *argv[])
         line_count++;
     }
 
+    fclose(file);
     exit(EXIT_SUCCESS);
 }
