@@ -62,10 +62,13 @@ int main(int argc, char *argv[])
     if (lflag)
     {
         rewind(file);
+        ssize_t read;
+        size_t size = 0;
+        char *line = NULL;
         count = 0;
-        for (char c = getc(file); c != EOF; c = getc(file))
-            if (c == '\n')
-                count++;
+
+        while ((read = getline(&line, &size, file)) != -1)
+            count++;
         printf("Lines count: %d\n", count);
     }
 
