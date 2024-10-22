@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[])
 {
@@ -10,7 +11,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    char* string = argv[1];
+    char *string = argv[1];
     FILE *file = fopen(argv[2], "r");
     if (file == NULL)
     {
@@ -19,12 +20,16 @@ int main(int argc, char *argv[])
     }
 
     int line_count = 1;
-    char line[1024];
+    ssize_t read;
+    size_t size = 0;
+    char *line = NULL;
+    char *pos;
 
-    while (fgets(line, sizeof(line), file) != NULL)
+    while ((read = getline(&line, &size, file)) != -1)
     {
-        char *pos = strstr(line, string);
-        while (pos != NULL) {
+        pos = strstr(line, string);
+        while (pos != NULL)
+        {
             printf("[%d:%ld]\n", line_count, pos - line);
             pos = strstr(pos + 1, string);
         }
