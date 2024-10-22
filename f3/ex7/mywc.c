@@ -4,48 +4,19 @@
 #include <string.h>
 #include <stdbool.h>
 
-int calculate_chars(FILE *file)
+int getwords(char *line)
 {
-    int count = 0;
+    int nwords = 0;
+    char *word;
 
-    for (char c = getc(file); c != EOF; c = getc(file))
-        count++;
-
-    return count;
-}
-
-int calculate_words(FILE *file)
-{
-    ssize_t read;
-    size_t size = 0;
-    char *line = NULL;
-    char *word = NULL;
-    int count = 0;
-
-    while ((read = getline(&line, &size, file)) != -1)
+    while ((word = strsep(&line, " \t")) != NULL)
     {
-        while ((word = strsep(&line, " \t")) != NULL)
-        {
-            if (*word == '\0')
-                continue;
-            count++;
-        }
+        if (*word == '\0')
+            continue;
+        nwords++;
     }
 
-    return count;
-}
-
-int calculate_lines(FILE *file)
-{
-    ssize_t read;
-    size_t size = 0;
-    char *line = NULL;
-    int count = 0;
-
-    while ((read = getline(&line, &size, file)) != -1)
-        count++;
-
-    return count;
+    return nwords;
 }
 
 int main(int argc, char *argv[])
@@ -81,19 +52,34 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    int nchars = 0;
+    int nwords = 0;
+    int nlines = 0;
+
+    ssize_t read;
+    size_t size = 0;
+    char *line = NULL;
+
+    while ((read = getline(&line, &size, file)) != -1)
+    {
+        nchars += read;
+        nwords += getwords(line);
+        nlines++;
+    }
+
     if (cflag)
     {
-        printf("Characters count: %d\n", calculate_chars(file));
+        printf("Chars count: %d\n", nchars);
     }
     if (wflag)
     {
         rewind(file);
-        printf("Words count: %d\n", calculate_words(file));
+        printf("Words count: %d\n", nwords);
     }
     if (lflag)
     {
         rewind(file);
-        printf("Lines count: %d\n", calculate_lines(file));
+        printf("Lines count: %d\n", nlines);
     }
 
     fclose(file);
