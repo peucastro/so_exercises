@@ -1,6 +1,3 @@
 #include "list.h"
 
-int list_size(list *l)
-{
-    return l->size;
-}
+int list_size(list *l) { return l->size; }

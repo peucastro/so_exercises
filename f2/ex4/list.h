@@ -1,13 +1,11 @@
-typedef struct anode
-{
-    int val;
-    struct anode *next;
+typedef struct anode {
+  int val;
+  struct anode *next;
 } node;
 
-typedef struct
-{
-    int size;
-    node *first;
+typedef struct {
+  int size;
+  node *first;
 } list;
 
 /* definition of the list API */

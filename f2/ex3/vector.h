@@ -1,8 +1,7 @@
-typedef struct
-{
-    double x;
-    double y;
-    double z;
+typedef struct {
+  double x;
+  double y;
+  double z;
 } vector;
 
 /* definition of the vector API */

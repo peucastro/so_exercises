@@ -1,7 +1,6 @@
-typedef struct
-{
-    double x;
-    double y;
+typedef struct {
+  double x;
+  double y;
 } complex;
 
 /* definition of the complex library API */
