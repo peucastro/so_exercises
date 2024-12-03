@@ -45,13 +45,17 @@ int main(int argc, char *argv[]) {
   for (int i = 3; i < argc; i++) {
     file = (char *)malloc(strlen(argv[i]) * sizeof(char));
     strcpy(buf, argv[i]);
-    buf[strlen(buf) - 1] = 'o';
-    buf[strlen(buf)] = '\0';
-    strcpy(file, buf);
-    command[j++] = file;
+
+    if (buf[strlen(buf) - 1] == 'c') {
+      buf[strlen(buf) - 1] = 'o';
+      buf[strlen(buf)] = '\0';
+      strcpy(file, buf);
+      command[j++] = file;
+    }
   }
   command[j++] = "-o";
   command[j++] = argv[2];
+  command[j++] = "-lm";
   command[j] = NULL;
 
   int retv = execvp("/usr/bin/gcc", command);
