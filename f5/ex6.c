@@ -21,13 +21,9 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "$ ");
     char buf[1024];
     char *command = fgets(buf, sizeof(buf), stdin);
-    if (command == NULL) {
+    command[strlen(buf) - 1] = '\0';
+    if (command == NULL || strcmp(command, "exit") == 0)
       break;
-    }
-    buf[strcspn(buf, "\n")] = '\0';
-    if (strcmp(buf, "exit") == 0) {
-      break;
-    }
 
     /* call fork and check return value */
     pid_t pid = fork();
@@ -38,7 +34,7 @@ int main(int argc, char *argv[]) {
 
     if (pid == 0) {
       char *args[64];
-      get_args(buf, args);
+      get_args(command, args);
       int retv = execvp(args[0], args);
       if (retv == -1) {
         perror("execvp");
