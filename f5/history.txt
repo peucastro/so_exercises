@@ -1,0 +1,30 @@
+ls
+uname -a
+exit
+ls
+uname -a
+ls
+uanme -a
+uname -a
+myhistory 2
+ls
+uname -a
+myhistory 1
+myhistory 2
+ls
+ls -la
+exit
+ls
+myhistory 5
+ls
+myhistory 4
+ls
+uname -a
+myhistory 2
+ls
+myhistory 2
+ls
+ls
+ls -lahi
+uname -a
+fastfetch
