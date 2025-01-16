@@ -33,16 +33,16 @@ int main(int argc, char *argv[]) {
       perror("error: cannot open file");
       exit(EXIT_FAILURE);
     }
-    close(sockets[1]);
+    close(sockets[0]);
     int nbytes = read(file, buffer, BUFFER_SIZE);
     while (nbytes > 0) {
-      write(sockets[0], buffer, nbytes);
-      nbytes = read(sockets[0], buffer, nbytes);
+      write(sockets[1], buffer, nbytes);
+      nbytes = read(sockets[1], buffer, nbytes);
       write(STDOUT_FILENO, buffer, nbytes);
       nbytes = read(file, buffer, BUFFER_SIZE);
     }
     close(file);
-    close(sockets[0]);
+    close(sockets[1]);
     retv = wait(NULL);
     if (retv == -1) {
       perror("wait");
@@ -50,14 +50,14 @@ int main(int argc, char *argv[]) {
     }
     exit(EXIT_SUCCESS);
   } else { /* child */
-    close(sockets[0]);
-    int nbytes = read(sockets[1], buffer, sizeof(buffer));
+    close(sockets[1]);
+    int nbytes = read(sockets[0], buffer, sizeof(buffer));
     while (nbytes > 0) {
       to_uppercase(buffer);
-      write(sockets[1], buffer, nbytes);
-      nbytes = read(sockets[1], buffer, sizeof(buffer));
+      write(sockets[0], buffer, nbytes);
+      nbytes = read(sockets[0], buffer, sizeof(buffer));
     }
-    close(sockets[1]);
+    close(sockets[0]);
     exit(EXIT_SUCCESS);
   }
 }
