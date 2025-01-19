@@ -4,10 +4,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 char *change_filename_extension(const char *filename) {
   const char *dot = strrchr(filename, '.'); // Find the last '.' in the filename
   size_t base_length = dot ? (size_t)(dot - filename) : strlen(filename);
