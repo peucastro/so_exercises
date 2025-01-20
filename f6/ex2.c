@@ -28,20 +28,20 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   if (retv > 0) { /* parent */
-    int file = open(argv[1], O_RDONLY);
-    if (file == -1) {
+    FILE *file = fopen(argv[1], "r");
+    if (file == NULL) {
       perror("error: cannot open file");
       exit(EXIT_FAILURE);
     }
     close(sockets[0]);
-    int nbytes = read(file, buffer, BUFFER_SIZE);
+    size_t nbytes = fread(buffer, 1, BUFFER_SIZE, file);
     while (nbytes > 0) {
       write(sockets[1], buffer, nbytes);
       nbytes = read(sockets[1], buffer, nbytes);
       write(STDOUT_FILENO, buffer, nbytes);
-      nbytes = read(file, buffer, BUFFER_SIZE);
+      nbytes = fread(buffer, 1, BUFFER_SIZE, file);
     }
-    close(file);
+    fclose(file);
     close(sockets[1]);
     retv = wait(NULL);
     if (retv == -1) {
