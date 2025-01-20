@@ -19,19 +19,18 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   if (pid > 0) { /* parent */
-    int file = open(argv[1], O_RDONLY);
-    if (file == -1) {
+    FILE *file = fopen(argv[1], "r");
+    if (file == NULL) {
       perror("error: cannot open file");
       exit(EXIT_FAILURE);
     }
     close(fd[0]);
     char buffer[BUFFER_SIZE];
-    int nbytes = read(file, buffer, BUFFER_SIZE);
-    while (nbytes > 0) {
+    size_t nbytes;
+    while ((nbytes = fread(buffer, 1, BUFFER_SIZE, file)) > 0) {
       write(fd[1], buffer, nbytes);
-      nbytes = read(file, buffer, BUFFER_SIZE);
     }
-    close(file);
+    fclose(file);
     close(fd[1]);
     if (wait(NULL) == -1) {
       perror("wait");
